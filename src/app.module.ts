@@ -4,6 +4,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {UserModule} from "@src/schemas/user/user.module";
 import {AuthModule} from "@src/auth/auth.module";
 import { TaskModule } from './schemas/task/task.module';
+import { ProjectModule } from './schemas/project/project.module';
 
 const configService = new ConfigService();
 
@@ -16,6 +17,7 @@ const configService = new ConfigService();
     UserModule,
     AuthModule,
     TaskModule,
+    ProjectModule,
   ],
   controllers: [],
   providers: [],
