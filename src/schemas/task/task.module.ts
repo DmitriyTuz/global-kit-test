@@ -10,6 +10,7 @@ import {Task, TaskSchema} from "@src/schemas/task/task.schema";
   providers: [TaskService],
   imports: [
     MongooseModule.forFeature([{name: Task.name, schema: TaskSchema}])
-  ]
+  ],
+  exports: [TaskService]
 })
 export class TaskModule {}
