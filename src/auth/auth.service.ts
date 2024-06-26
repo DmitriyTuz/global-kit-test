@@ -10,6 +10,8 @@ import {CustomHttpException} from "@src/exceptions/сustomHttp.exception";
 import {JwtPayload} from "@src/interfaces/jwt-payload.interface";
 import {ConfigService} from "@nestjs/config";
 import { JwtService } from '@nestjs/jwt';
+import {LoginDto} from "@src/auth/dto/login.dto";
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -23,35 +25,6 @@ export class AuthService {
    private jwtService: JwtService,
 
   ) {}
-
-  // async googleLogin(req: RequestWithUser): Promise<User> {
-  //   try {
-  //     if (!req.user) {
-  //       throw new HttpException('No user from Google', HttpStatus.NOT_FOUND);
-  //     }
-  //
-  //     const email = req.user.email
-  //
-  //     let user = await this.userModel.findOne({email})
-  //
-  //     if (!user) {
-  //       const createUserDto: CreateUserDto = {
-  //         email: email,
-  //         firstName: req.user.firstName,
-  //         lastName: req.user.lastName,
-  //         accessToken: req.user.accessToken
-  //       }
-  //
-  //       user = await this.userModel.create(createUserDto)
-  //     }
-  //
-  //     return req.user
-  //     // return user
-  //   } catch (err) {
-  //     console.log('! error = ', err);
-  //     throw err
-  //   }
-  // }
 
   async signUp(reqBody: SignUpDto): Promise<{ success: boolean, token: string }> {
     try {
@@ -77,6 +50,19 @@ export class AuthService {
     }
   }
 
+  async login(reqBody: LoginDto): Promise<{ success: boolean, token: string }> {
+    try {
+      const user: User = await this.validateUser(reqBody);
+      const token: string = await this.generateToken(user);
+
+      return { success: true, token: token };
+
+    } catch (e) {
+      this.logger.error(`Error during user login: ${e.message}`);
+      throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
+    }
+  }
+
   private async generateToken(user: User): Promise<string> {
     // const payload = { name: user.name, phone: user.phone, id: user.id };
     // const payload: JwtPayload = { id: user.id };
@@ -87,4 +73,19 @@ export class AuthService {
     const token: string = this.jwtService.sign(payload, { secret: secretKey, expiresIn });
     return token;
   }
+
+  private async validateUser(dto: LoginDto): Promise<User> {
+    const user: User | undefined = await this.userService.getOneByEmail(dto.email);
+
+    if (user) {
+      const passwordEquals: boolean = await bcrypt.compare(dto.password, user.password);
+
+      if (passwordEquals) {
+        return user;
+      }
+    }
+
+    throw new HttpException('Incorrect email or password', HttpStatus.UNAUTHORIZED);
+  }
+
 }

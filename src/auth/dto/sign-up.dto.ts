@@ -15,7 +15,7 @@ export class SignUpDto {
   @Length(3, 256, { message: 'Must be at least 2 characters' })
   readonly lastName: string;
 
-  @ApiProperty({ example: "user@gmail.com", description: "email" })
+  @ApiProperty({ example: "email@gmail.com", description: "email" })
   @IsString({ message: "Must be a string" })
   @IsEmail({}, { message: "Incorrect email" })
   readonly email: string;
