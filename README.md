@@ -26,13 +26,27 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## 1. Installation
+
+Versions: node - 16.19.1, MongoDB - 4.2
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+## 2. DB (please install Docker !)
+
+```bash
+# initialization database for development with docker 
+$ npm run init-db
+# deleting database
+$ npm run remove-db
+```
+
+(!) After command - npm run init-db we can access your databases in the development environment using environment variables located in the
+.env (for development) and .test.env (for tests) files.
+
+## 3. Running the app
 
 ```bash
 # development
@@ -40,23 +54,18 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+## 4. Test
 
 ```bash
-# unit tests
-$ npm run test
-
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
+
+## 5. Swagger documentation
+
+http://localhost:5000/api/docs
 
 ## Support
 

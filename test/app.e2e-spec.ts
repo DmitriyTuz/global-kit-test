@@ -28,7 +28,7 @@ describe('Tests API (e2e)', () => {
     taskService = app.get<TaskService>(TaskService);
   });
 
-  afterEach(async () => {
+  beforeEach(async () => {
     await taskService.deleteAll();
     await projectService.deleteAll();
   });
@@ -45,12 +45,17 @@ describe('Tests API (e2e)', () => {
       }
       const project: ProjectDocument = await projectService.createProject(createProjectData);
 
-      const createTaskData: CreateTaskDto = {
-        title: 'Test Task',
-        projectId: project._id as unknown as ObjectId
-      };
+      const tasksData: CreateTaskDto[] = [
+        { title: 'Test Task 1', projectId: project._id as unknown as ObjectId },
+        { title: 'Test Task 2', projectId: project._id as unknown as ObjectId },
+        { title: 'Test Task 3', projectId: project._id as unknown as ObjectId },
+      ];
 
-      const task: TaskDocument = await taskService.createTask(createTaskData);
+      const tasks: TaskDocument[] = [];
+      for (const taskData of tasksData) {
+        const task = await taskService.createTask(taskData);
+        tasks.push(task);
+      }
 
       const response = await request(app.getHttpServer())
           .get('/task/get-all-tasks')
@@ -59,10 +64,51 @@ describe('Tests API (e2e)', () => {
       // console.log('! response.body =', response.body);
 
       expect(Array.isArray(response.body)).toBe(true);
-      const createdTask = response.body.find((t) => t.title === 'Test Task');
-      expect(createdTask).toBeDefined();
-      expect(createdTask.title).toBe('Test Task');
-      expect(createdTask.projectId).toBe(project._id.toString());
+      for (const taskData of tasksData) {
+        const createdTask = response.body.find((t) => t.title === taskData.title);
+        expect(createdTask).toBeDefined();
+        expect(createdTask.title).toBe(taskData.title);
+        expect(createdTask.projectId).toBe(project._id.toString());
+      }
+    });
+
+    it('/task/get-tasks-filter-sort (GET)', async () => {
+      const createProjectData: CreateProjectDto = {
+        name: 'Test Project',
+      };
+      const project: ProjectDocument = await projectService.createProject(createProjectData);
+
+      const tasksData: CreateTaskDto[] = [
+        { title: 'Test Task 1', projectId: project._id as unknown as ObjectId },
+        { title: 'Test Task 2', projectId: project._id as unknown as ObjectId },
+        { title: 'Test Task 3', projectId: project._id as unknown as ObjectId },
+      ];
+
+      const tasks: TaskDocument[] = [];
+      for (const taskData of tasksData) {
+        const task = await taskService.createTask(taskData);
+        tasks.push(task);
+      }
+
+      const response = await request(app.getHttpServer())
+          .get('/task/get-tasks-filter-sort')
+          .query({ sortBy: 'createdAt', sortOrder: 'asc' })
+          .expect(HttpStatus.OK);
+
+      // console.log('! response.body =', response.body);
+
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBe(3);
+
+      const sortedTasks = response.body.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
+      expect(response.body).toEqual(sortedTasks);
+
+      for (const taskData of tasksData) {
+        const createdTask = response.body.find((t) => t.title === taskData.title);
+        expect(createdTask).toBeDefined();
+        expect(createdTask.title).toBe(taskData.title);
+        expect(createdTask.projectId).toBe(project._id.toString());
+      }
     });
   });
 });
