@@ -49,8 +49,6 @@ export class TaskService {
       sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
     }
 
-    console.log('filter = ', filter);
-    // return this.taskModel.find(filter);
     return this.taskModel.find(filter).sort(sort).exec();
   }
 }

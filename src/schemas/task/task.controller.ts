@@ -39,11 +39,11 @@ export class TaskController {
 
   @Patch('/update-task/:id')
   @ApiOperation({ summary: 'Update task' })
-  @ApiParam({ name: 'id', example: '667c87ef3490c6ec534d2df3', type: String, description: 'Task ID for update' })
+  @ApiParam({ name: 'id', example: '667c8b87ea697ae124a41fd8', type: String, description: 'Task ID for update' })
   @ApiBody({ type: UpdateTaskDto, description: 'Task data for update' })
   // @UsePipes(ValidationPipe)
-  async update(@Param('id') id: ObjectId, @Body() updateTaskDto: UpdateTaskDto) {
-    return await this.taskService.updateById(id, updateTaskDto);
+  update(@Param('id') id: ObjectId, @Body() updateTaskDto: UpdateTaskDto) {
+    return this.taskService.updateById(id, updateTaskDto);
   }
 
   @Delete('/delete-task/:id')
@@ -65,6 +65,6 @@ export class TaskController {
       @Query('sortBy') sortBy?: string,
       @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc'
   ): Promise<Task[]> {
-    return this.taskService.getTasks(status, projectId/*, sortBy, sortOrder*/);
+    return this.taskService.getTasks(status, projectId, sortBy, sortOrder);
   }
 }
