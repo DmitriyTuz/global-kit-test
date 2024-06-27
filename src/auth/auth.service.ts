@@ -31,7 +31,7 @@ export class AuthService {
 
       const { firstName, lastName, email, password, type } = reqBody;
 
-      const newUser: CreateUserDto = {
+      const newUser: SignUpDto = {
         firstName,
         lastName,
         email,
