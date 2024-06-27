@@ -14,7 +14,7 @@ console.log('process.env.MONGODB_URL = ', process.env.MONGODB_URL);
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      // envFilePath: `.${process.env.NODE_ENV}.env`,
       isGlobal: true,
     }),
     MongooseModule.forRoot(configService.get('MONGODB_URL')),

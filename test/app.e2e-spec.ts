@@ -28,7 +28,7 @@ describe('Tests API (e2e)', () => {
     taskService = app.get<TaskService>(TaskService);
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await taskService.deleteAll();
     await projectService.deleteAll();
   });
