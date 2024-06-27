@@ -1,10 +1,9 @@
-import {Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, UsePipes, ValidationPipe} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import {Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, UsePipes} from '@nestjs/common';
 import { AuthService } from '@src/auth/auth.service';
-// import { RequestWithUser } from '@src/interfaces/add-field-user-to-Request.interface';
 import {SignUpDto} from "@src/auth/dto/sign-up.dto";
 import {ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {LoginDto} from "@src/auth/dto/login.dto";
+import {ValidationPipe} from "@src/pipes/validation.pipe";
 
 @ApiTags('Auth')
 @Controller('auth')

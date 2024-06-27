@@ -6,7 +6,7 @@ import {Project} from "@src/schemas/project/project.schema";
 
 export type TaskDocument = HydratedDocument<Task>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Task {
   @Prop()
   @ApiProperty({ example: 'Title1', description: 'Task title' })

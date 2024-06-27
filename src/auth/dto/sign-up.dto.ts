@@ -9,7 +9,7 @@ export class SignUpDto {
   @Length(3, 256, { message: 'Must be at least 2 characters' })
   readonly firstName: string;
 
-  @ApiProperty({ example: 'FirstName1', description: 'User first name' })
+  @ApiProperty({ example: 'LastName1', description: 'User first name' })
   @IsNotEmpty({ message: 'User first name required !' })
   @IsString({ message: 'Must be a string' })
   @Length(3, 256, { message: 'Must be at least 2 characters' })

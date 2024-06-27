@@ -24,7 +24,6 @@ export class UserService {
 
   async createUser(dto: CreateUserDto): Promise <User> {
     try {
-
       let {email} = dto;
 
       const currentUser: User = await this.getOneByEmail(email);
@@ -34,12 +33,6 @@ export class UserService {
 
       let password: string = dto.password;
 
-      // if (!dto.password) {
-      //   password = this.passwordService.createPassword()
-
-      // } else { password = dto.password }
-
-      // const hashPassword: string = await this.passwordService.hashPassword(password);
       const hashPassword: string = await bcrypt.hash(password, 5);
 
       const newUser: CreateUserDto = {

@@ -2,13 +2,22 @@ version: '3'
 
 services:
   # MONGODB
-  mongo:
-    container_name: 'mongo'
+  mongo-dev:
+    container_name: kit_global_dev
     image: mongo:4.2
     env_file:
       - .env
     restart: always
     ports:
       - 27017:27017
+
+  mongo-test:
+    container_name: kit_global_test
+    image: mongo:4.2
+    env_file:
+      - .test.env
+    restart: always
+    ports:
+      - 27018:27017
 
 

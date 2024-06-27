@@ -35,5 +35,20 @@ export class TaskService {
     return task.id;
   }
 
+  async getTasks(status?: string, projectId?: ObjectId, sortBy?: string, sortOrder: 'asc' | 'desc' = 'asc'): Promise<Task[]> {
+    const filter: any = {};
+    if (status) {
+      filter.status = status;
+    }
+    if (projectId) {
+      filter.projectId = projectId;
+    }
 
+    const sort: any = {};
+    if (sortBy) {
+      sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    }
+
+    return this.taskModel.find(filter).sort(sort).exec();
+  }
 }
