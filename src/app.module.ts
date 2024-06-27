@@ -8,7 +8,8 @@ import { ProjectModule } from './schemas/project/project.module';
 
 const configService = new ConfigService();
 
-console.log('process.env.NODE_ENV = ', process.env.NODE_ENV)
+console.log('process.env.NODE_ENV = ', process.env.NODE_ENV);
+console.log('process.env.MONGODB_URL = ', process.env.MONGODB_URL);
 
 @Module({
   imports: [

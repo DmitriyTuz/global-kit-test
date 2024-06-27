@@ -51,4 +51,8 @@ export class TaskService {
 
     return this.taskModel.find(filter).sort(sort).exec();
   }
+
+  async deleteAll(): Promise<void> {
+    await this.taskModel.deleteMany({});
+  }
 }

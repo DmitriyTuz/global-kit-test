@@ -2,7 +2,7 @@ import {HttpStatus, Injectable, Logger} from '@nestjs/common';
 import {CreateProjectDto} from "@src/schemas/project/dto/create-project.dto";
 import {Project, ProjectDocument} from "@src/schemas/project/project.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
+import {Model, ObjectId} from "mongoose";
 import {CreateTaskDto} from "@src/schemas/task/dto/create-task.dto";
 import {Task} from "@src/schemas/task/task.schema";
 import {TaskService} from "@src/schemas/task/task.service";
@@ -31,5 +31,13 @@ export class ProjectService {
       this.logger.error(`Error during add task to project: ${e.message}`);
       throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
     }
+  }
+
+  async deleteById(id: ObjectId): Promise<void> {
+    await this.projectModel.findByIdAndDelete(id);
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.projectModel.deleteMany({});
   }
 }
