@@ -1,9 +1,9 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
+import {Model, ObjectId} from "mongoose";
 import {Task, TaskDocument} from "@src/schemas/task/task.schema";
 import {CreateTaskDto} from "@src/schemas/task/dto/create-task.dto";
-import {ObjectId} from "mongoose";
+import {UpdateTaskDto} from "@src/schemas/task/dto/update-task.dto";
 
 
 @Injectable()
@@ -25,9 +25,15 @@ export class TaskService {
     });
   }
 
+  async updateById(id: ObjectId, updateTaskDto: UpdateTaskDto) {
+    return this.taskModel.findByIdAndUpdate(id, updateTaskDto, {new: true});
+  }
+
   async deleteById(id: ObjectId): Promise<ObjectId> {
     const task = await this.taskModel.findByIdAndDelete(id);
     // const task = await this.taskModel.deleteOne({_id: objectId});
     return task.id;
   }
+
+
 }

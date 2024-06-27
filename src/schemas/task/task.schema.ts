@@ -12,7 +12,7 @@ export class Task {
   @ApiProperty({ example: 'Title1', description: 'Task title' })
   title: string;
 
-  @Prop()
+  @Prop({ default: 'New' })
   @ApiProperty({ example: 'New', description: 'Task status' })
   status: string;
 
