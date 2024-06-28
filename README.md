@@ -65,6 +65,8 @@ $ npm run test:e2e
 
 ## 5. Swagger documentation
 
+(!) After running the application and add database with docker
+
 http://localhost:5000/api/docs
 
 ## Support
