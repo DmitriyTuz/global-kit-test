@@ -6,7 +6,4 @@ export class UpdateTaskDto {
 
   @ApiProperty({ example: 'New', description: 'Task status', required: false })
   status?: string;
-
-  // @ApiProperty({ example: '60d0fe4f5311236168a109ca', description: 'Project ID', required: false })
-  // projectId?: string;
 }

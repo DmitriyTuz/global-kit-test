@@ -64,8 +64,6 @@ export class AuthService {
   }
 
   private async generateToken(user: User): Promise<string> {
-    // const payload = { name: user.name, phone: user.phone, id: user.id };
-    // const payload: JwtPayload = { id: user.id };
     const payload: JwtPayload = { email: user.email };
     const secretKey: string = this.configService.get('PRIVATE_KEY') || 'SECRET';
     const expiresIn: string = '24h';
@@ -84,7 +82,6 @@ export class AuthService {
         return user;
       }
     }
-
     throw new HttpException('Incorrect email or password', HttpStatus.UNAUTHORIZED);
   }
 
