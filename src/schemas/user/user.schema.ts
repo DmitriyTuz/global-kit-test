@@ -26,9 +26,6 @@ export class User {
   @ApiProperty({ example: 'ADMIN', description: 'User role' })
   type: string;
 
-  // @Prop()
-  // accessToken: string;
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
