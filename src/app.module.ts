@@ -6,14 +6,20 @@ import {AuthModule} from "@src/auth/auth.module";
 import { TaskModule } from './schemas/task/task.module';
 import { ProjectModule } from './schemas/project/project.module';
 
-const configService = new ConfigService();
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(configService.get('MONGODB_URL')),
+
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URL'),
+      }),
+      inject: [ConfigService],
+    }),
+    // MongooseModule.forRoot(configService.get('MONGODB_URL')),
     UserModule,
     AuthModule,
     TaskModule,
