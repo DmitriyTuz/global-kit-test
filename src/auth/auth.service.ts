@@ -27,7 +27,7 @@ export class AuthService {
   ) {}
 
   async signUp(reqBody: SignUpDto): Promise<{ success: boolean, token: string }> {
-    try {
+    // try {
 
       const { firstName, lastName, email, password, type } = reqBody;
 
@@ -44,10 +44,10 @@ export class AuthService {
 
       return { success: true, token: token };
 
-    } catch (e) {
-      this.logger.error(`Error during user signUp: ${e.message}`);
-      throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
-    }
+    // } catch (e) {
+    //   this.logger.error(`Error during user signUp: ${e.message}`);
+    //   throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
+    // }
   }
 
   async login(reqBody: LoginDto): Promise<{ success: boolean, token: string }> {

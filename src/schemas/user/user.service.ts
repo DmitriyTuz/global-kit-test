@@ -3,9 +3,10 @@ import {User, UserDocument} from "@src/schemas/user/user.schema";
 import {Model, ObjectId} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {CreateUserDto} from "@src/schemas/user/dto/create-user.dto";
-import {CustomHttpException} from "@src/exceptions/сustomHttp.exception";
+// import {CustomHttpException} from "@src/exceptions/сustomHttp.exception";
 
 import * as bcrypt from 'bcryptjs';
+import {FoundException} from "@src/exceptions/found-exception.exception";
 
 @Injectable()
 export class UserService {
@@ -23,12 +24,22 @@ export class UserService {
   }
 
   async createUser(dto: CreateUserDto): Promise <User> {
-    try {
+    // try {
       let {email} = dto;
 
       const currentUser: User = await this.getOneByEmail(email);
       if (currentUser) {
-        throw new HttpException(`User with email ${currentUser.email} already exists`, HttpStatus.FOUND);
+
+        throw new FoundException();
+
+        // throw new HttpException(
+        //     {
+        //       message: `User with email ${currentUser.email} already exists`,
+        //       error: 'Our error',
+        //       status: HttpStatus.FOUND
+        //     }, HttpStatus.FOUND);
+
+        // throw new HttpException(`User with email ${currentUser.email} already exists`, HttpStatus.FOUND);
       }
 
       let password: string = dto.password;
@@ -46,9 +57,9 @@ export class UserService {
 
       return user;
 
-    } catch (e) {
-      this.logger.error(`Error during user creation: ${e.message}`);
-      throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
-    }
+    // } catch (e) {
+    //   this.logger.error(`Error during user creation: ${e.message}`);
+    //   throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
+    // }
   }
 }
