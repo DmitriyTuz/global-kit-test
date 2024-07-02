@@ -1,11 +1,13 @@
-import {Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Post, Req, Res, UseFilters, UseGuards, UsePipes} from '@nestjs/common';
 import { AuthService } from '@src/auth/auth.service';
 import {SignUpDto} from "@src/auth/dto/sign-up.dto";
 import {ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {LoginDto} from "@src/auth/dto/login.dto";
 import {ValidationPipe} from "@src/pipes/validation.pipe";
+import {AllExceptionsFilter} from "@src/exception-filters/exception-filter";
 
 @ApiTags('Auth')
+// @UseFilters(AllExceptionsFilter)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

@@ -7,13 +7,14 @@ interface Error {
   [key: string]: string;
 }
 
-export class FoundException extends HttpException {
+export class FoundUserException extends HttpException {
   constructor(error: Error = null) {
     super(
         {
           message: 'User with email already exists',
-          error: 'found_exception',
+          error: 'found_user_exception',
           createdAt: new Date(),
+          status: HttpStatus.FOUND,
           ... error
       },
       HttpStatus.FOUND,

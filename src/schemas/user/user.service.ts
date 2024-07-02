@@ -6,7 +6,7 @@ import {CreateUserDto} from "@src/schemas/user/dto/create-user.dto";
 // import {CustomHttpException} from "@src/exceptions/сustomHttp.exception";
 
 import * as bcrypt from 'bcryptjs';
-import {FoundException} from "@src/exceptions/found-exception.exception";
+import {FoundUserException} from "@src/exceptions/found-user-exception.exception";
 
 @Injectable()
 export class UserService {
@@ -30,14 +30,14 @@ export class UserService {
       const currentUser: User = await this.getOneByEmail(email);
       if (currentUser) {
 
-        throw new FoundException();
+        // throw new FoundUserException({code: 'error'});
 
-        // throw new HttpException(
-        //     {
-        //       message: `User with email ${currentUser.email} already exists`,
-        //       error: 'Our error',
-        //       status: HttpStatus.FOUND
-        //     }, HttpStatus.FOUND);
+        throw new HttpException(
+            {
+              message: `User with email ${currentUser.email} already exists`,
+              error: 'Our error',
+              status: HttpStatus.FOUND
+            }, HttpStatus.FOUND);
 
         // throw new HttpException(`User with email ${currentUser.email} already exists`, HttpStatus.FOUND);
       }
