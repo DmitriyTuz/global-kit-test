@@ -5,7 +5,6 @@ import {Task, TaskDocument} from "@src/schemas/task/task.schema";
 import {CreateTaskDto} from "@src/schemas/task/dto/create-task.dto";
 import {UpdateTaskDto} from "@src/schemas/task/dto/update-task.dto";
 
-
 @Injectable()
 export class TaskService {
 

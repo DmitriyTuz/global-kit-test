@@ -24,42 +24,36 @@ export class UserService {
   }
 
   async createUser(dto: CreateUserDto): Promise <User> {
-    // try {
-      let {email} = dto;
+    let {email} = dto;
 
-      const currentUser: User = await this.getOneByEmail(email);
-      if (currentUser) {
+    const currentUser: User = await this.getOneByEmail(email);
+    if (currentUser) {
 
-        // throw new FoundUserException({code: 'error'});
+      // throw new FoundUserException({code: 'error'});
 
-        throw new HttpException(
-            {
-              message: `User with email ${currentUser.email} already exists`,
-              error: 'Our error',
-              status: HttpStatus.FOUND
-            }, HttpStatus.FOUND);
+      throw new HttpException(
+          {
+            message: `User with email ${currentUser.email} already exists`,
+            error: 'Our error',
+            status: HttpStatus.FOUND
+          }, HttpStatus.FOUND);
 
-        // throw new HttpException(`User with email ${currentUser.email} already exists`, HttpStatus.FOUND);
-      }
+      // throw new HttpException(`User with email ${currentUser.email} already exists`, HttpStatus.FOUND);
+    }
 
-      let password: string = dto.password;
+    let password: string = dto.password;
 
-      const hashPassword: string = await bcrypt.hash(password, 5);
+    const hashPassword: string = await bcrypt.hash(password, 5);
 
-      const newUser: CreateUserDto = {
-        ...dto,
-        password: hashPassword,
-      };
+    const newUser: CreateUserDto = {
+      ...dto,
+      password: hashPassword,
+    };
 
-      let user: User = await this.userModel.create(newUser);
+    let user: User = await this.userModel.create(newUser);
 
-      this.logger.log(`User created: ${user.firstName} ${user.lastName}`);
+    this.logger.log(`User created: ${user.firstName} ${user.lastName}`);
 
-      return user;
-
-    // } catch (e) {
-    //   this.logger.error(`Error during user creation: ${e.message}`);
-    //   throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
-    // }
+    return user;
   }
 }
