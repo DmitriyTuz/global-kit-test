@@ -21,16 +21,11 @@ export class ProjectService {
   }
 
   async addTask(dto: CreateTaskDto): Promise<Task> {
-    try {
-      const project = await this.projectModel.findById(dto.projectId);
-      const task = await this.taskService.createTask(dto);
-      project.tasks.push(task.id);
-      await project.save();
-      return task;
-    } catch (e) {
-      this.logger.error(`Error during add task to project: ${e.message}`);
-      throw new CustomHttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY, [e.message], new Error().stack);
-    }
+    const project = await this.projectModel.findById(dto.projectId);
+    const task = await this.taskService.createTask(dto);
+    project.tasks.push(task.id);
+    await project.save();
+    return task;
   }
 
   async deleteById(id: ObjectId): Promise<void> {
