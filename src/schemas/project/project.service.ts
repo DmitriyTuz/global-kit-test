@@ -28,8 +28,9 @@ export class ProjectService {
     return task;
   }
 
-  async deleteById(id: ObjectId): Promise<void> {
-    await this.projectModel.findByIdAndDelete(id);
+  async deleteById(id: ObjectId): Promise<ObjectId> {
+    const project = await this.projectModel.findByIdAndDelete(id);
+    return project.id;
   }
 
   async deleteAll(): Promise<void> {
