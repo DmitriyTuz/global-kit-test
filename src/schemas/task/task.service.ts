@@ -4,6 +4,7 @@ import {Model, ObjectId} from "mongoose";
 import {Task, TaskDocument} from "@src/schemas/task/task.schema";
 import {CreateTaskDto} from "@src/schemas/task/dto/create-task.dto";
 import {UpdateTaskDto} from "@src/schemas/task/dto/update-task.dto";
+import {FilterTaskDto} from "@src/schemas/task/dto/filter-task.dto";
 
 @Injectable()
 export class TaskService {
@@ -34,18 +35,35 @@ export class TaskService {
     return task.id;
   }
 
-  async getTasks(status?: string, projectId?: ObjectId, sortBy?: string, sortOrder: 'asc' | 'desc' = 'asc'): Promise<Task[]> {
+  // async getTasks(status?: string, projectId?: ObjectId, sortBy?: string, sortOrder: 'asc' | 'desc' = 'asc'): Promise<Task[]> {
+  //   const filter: any = {};
+  //   if (status) {
+  //     filter.status = status;
+  //   }
+  //   if (projectId) {
+  //     filter.projectId = projectId;
+  //   }
+  //
+  //   const sort: any = {};
+  //   if (sortBy) {
+  //     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+  //   }
+  //
+  //   return this.taskModel.find(filter).sort(sort).exec();
+  // }
+
+  async getTasks(dto: FilterTaskDto): Promise<Task[]> {
     const filter: any = {};
-    if (status) {
-      filter.status = status;
+    if (dto.status) {
+      filter.status = dto.status;
     }
-    if (projectId) {
-      filter.projectId = projectId;
+    if (dto.projectId) {
+      filter.projectId = dto.projectId;
     }
 
     const sort: any = {};
-    if (sortBy) {
-      sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    if (dto.sortBy) {
+      sort[dto.sortBy] = dto.sortOrder === 'asc' ? 1 : -1;
     }
 
     return this.taskModel.find(filter).sort(sort).exec();

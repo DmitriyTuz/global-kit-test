@@ -6,6 +6,7 @@ import {ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags} from "@
 import {ObjectId} from "mongoose";
 import {UpdateTaskDto} from "@src/schemas/task/dto/update-task.dto";
 import {ValidationPipe} from "@src/pipes/validation.pipe";
+import {FilterTaskDto} from "@src/schemas/task/dto/filter-task.dto";
 
 
 @ApiTags('Tasks')
@@ -53,18 +54,35 @@ export class TaskController {
     return this.taskService.deleteById(id);
   }
 
-  @Get('/get-tasks-filter-sort')
+  // @Get('/get-tasks-filter-sort')
+  // @ApiOperation({ summary: 'Get a list of tasks with filtering and sorting' })
+  // @ApiQuery({ name: 'status', example: 'New', required: false, description: 'Filtering by status' })
+  // @ApiQuery({ name: 'projectId', example: '667c87ef3490c6ec534d2df3', required: false, description: 'Filtering by Project ID' })
+  // @ApiQuery({ name: 'sortBy', required: false, description: 'Sort field', example: 'createdAt' })
+  // @ApiQuery({ name: 'sortOrder', required: false, description: 'Sorting order', example: 'asc', enum: ['asc', 'desc'] })
+  // async getTasks(
+  //     @Query('status') status?: string,
+  //     @Query('projectId') projectId?: ObjectId,
+  //     @Query('sortBy') sortBy?: string,
+  //     @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc'
+  // ): Promise<Task[]> {
+  //   return this.taskService.getTasks(status, projectId, sortBy, sortOrder);
+  // }
+
+  @Post('/get-tasks-filter-sort')
   @ApiOperation({ summary: 'Get a list of tasks with filtering and sorting' })
-  @ApiQuery({ name: 'status', example: 'New', required: false, description: 'Filtering by status' })
-  @ApiQuery({ name: 'projectId', example: '667c87ef3490c6ec534d2df3', required: false, description: 'Filtering by Project ID' })
-  @ApiQuery({ name: 'sortBy', required: false, description: 'Sort field', example: 'createdAt' })
-  @ApiQuery({ name: 'sortOrder', required: false, description: 'Sorting order', example: 'asc', enum: ['asc', 'desc'] })
+  @ApiBody({ type: FilterTaskDto, description: 'Task data for Filter' })
+  // @ApiQuery({ name: 'status', example: 'New', required: false, description: 'Filtering by status' })
+  // @ApiQuery({ name: 'projectId', example: '667c87ef3490c6ec534d2df3', required: false, description: 'Filtering by Project ID' })
+  // @ApiQuery({ name: 'sortBy', required: false, description: 'Sort field', example: 'createdAt' })
+  // @ApiQuery({ name: 'sortOrder', required: false, description: 'Sorting order', example: 'asc', enum: ['asc', 'desc'] })
   async getTasks(
-      @Query('status') status?: string,
-      @Query('projectId') projectId?: ObjectId,
-      @Query('sortBy') sortBy?: string,
-      @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc'
+      // @Query('status') status?: string,
+      // @Query('projectId') projectId?: ObjectId,
+      // @Query('sortBy') sortBy?: string,
+      // @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc'
+      @Body() dto: FilterTaskDto
   ): Promise<Task[]> {
-    return this.taskService.getTasks(status, projectId, sortBy, sortOrder);
+    return this.taskService.getTasks(dto);
   }
 }
